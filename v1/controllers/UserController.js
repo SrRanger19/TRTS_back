@@ -65,15 +65,14 @@ const deleteUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        
         const users = await db.query("SELECT id, name, email, password FROM user WHERE email = ?", [email]);
-        
+
         if (users.length === 0) {
             return res.status(401).json({ message: "User not found" });
         }
 
-        const user = users[0];
-        if (user.password !== password) {
+        const user = users[0][0];
+        if (!user.password || !password || user.password.trim().toLowerCase() !== password.trim().toLowerCase()) {
             return res.status(401).json({ message: "Incorrect password" });
         }
 
@@ -82,6 +81,7 @@ const loginUser = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
 
 export const methods = {
     getUsers,

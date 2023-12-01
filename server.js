@@ -1,5 +1,6 @@
 import express from "express";
 import signale from "signale";
+import morgan from "morgan";
 import cors from 'cors';
 import { createTables } from "./database/mysql.js";
 
@@ -11,6 +12,8 @@ import { SensorRouter } from "./v1/router/SensorRouter.js";
 const app = express();
 
 app.use(cors());
+
+app.use(morgan("dev"));
 app.use(express.json());
 
 createTables();
