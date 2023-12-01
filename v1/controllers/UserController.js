@@ -1,25 +1,21 @@
-import { db } from "../../database/mysql.js"
+import { db } from "../../database/mysql.js";
 
 const getUsers = async (req, res) => {
     try {
-        const connection = await db();
-        const result = await connection.query("SELECT id, name, email, password FROM user");
+        const result = await db.query("SELECT id, name, email, password FROM user");
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
 const getUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const connection = await db();
-        const result = await connection.query("SELECT id, name, email, password FROM user WHERE id = ?", id);
+        const result = await db.query("SELECT id, name, email, password FROM user WHERE id = ?", [id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
@@ -32,8 +28,7 @@ const addUser = async (req, res) => {
         }
 
         const user = { name, email, password };
-        const connection = await db();
-        await connection.query("INSERT INTO user SET ?", user);
+        await db.query("INSERT INTO user SET ?", user);
         return res.json({ message: "User added" });
     } catch (error) {
         return res.status(500).send(error.message);
@@ -50,24 +45,20 @@ const updateUser = async (req, res) => {
         }
 
         const user = { name, email, password };
-        const connection = await db();
-        const result = await connection.query("UPDATE user SET ? WHERE id = ?", [user, id]);
+        const result = await db.query("UPDATE user SET ? WHERE id = ?", [user, id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const connection = await db();
-        const result = await connection.query("DELETE FROM user WHERE id = ?", id);
+        const result = await db.query("DELETE FROM user WHERE id = ?", [id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
@@ -75,8 +66,7 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         
-        const connection = await db();
-        const users = await connection.query("SELECT id, name, email, password FROM user WHERE email = ?", [email]);
+        const users = await db.query("SELECT id, name, email, password FROM user WHERE email = ?", [email]);
         
         if (users.length === 0) {
             return res.status(401).json({ message: "User not found" });

@@ -1,4 +1,4 @@
-import { db } from "../../database/mysql.js"
+import { db } from "../../database/mysql.js";
 
 const getContainers = async (req, res) => {
     try {
@@ -7,24 +7,20 @@ const getContainers = async (req, res) => {
             return res.status(400).json({ message: "user_id is required." });
         }
 
-        const connection = await db();
-        const result = await connection.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE user_id = ?", [user_id]);
+        const result = await db.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE user_id = ?", [user_id]);
         res.json(result);
     } catch (error) {
         res.status(500).send(error.message);
     }
 };
 
-
 const getContainer = async (req, res) => {
     try {
         const { id } = req.params;
-        const connection = await db();
-        const result = await connection.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE id = ?", id);
+        const result = await db.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE id = ?", [id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
@@ -37,14 +33,12 @@ const addContainer = async (req, res) => {
         }
 
         const container = { name, type, temp, init_day, end_day, substratum, user_id };
-        const connection = await db();
-        await connection.query("INSERT INTO container SET ?", container);
+        await db.query("INSERT INTO container SET ?", container);
         return res.json({ message: "Container added" });
     } catch (error) {
         return res.status(500).send(error.message);
     }
 };
-
 
 const updateContainer = async (req, res) => {
     try {
@@ -56,24 +50,20 @@ const updateContainer = async (req, res) => {
         }
 
         const container = { name, type, temp, init_day, end_day, substratum };
-        const connection = await db();
-        const result = await connection.query("UPDATE container SET ? WHERE id = ?", [container, id]);
+        const result = await db.query("UPDATE container SET ? WHERE id = ?", [container, id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
 const deleteContainer = async (req, res) => {
     try {
         const { id } = req.params;
-        const connection = await db();
-        const result = await connection.query("DELETE FROM container WHERE id = ?", id);
+        const result = await db.query("DELETE FROM container WHERE id = ?", [id]);
         res.json(result);
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
