@@ -2,6 +2,8 @@ import express from "express";
 import signale from "signale";
 import cors from 'cors';
 import { createTables } from "./database/mysql.js";
+
+//routes
 import { UserRouter } from "./v1/router/UserRouter.js";
 import {  ContainerRouter } from "./v1/router/ContainerRouter.js";
 import { SensorRouter } from "./v1/router/SensorRouter.js";
