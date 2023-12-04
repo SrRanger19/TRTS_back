@@ -3,7 +3,8 @@ import { db } from "../../database/mysql.js";
 const getUsers = async (req, res) => {
     try {
         const result = await db.query("SELECT id, name, email, password FROM user");
-        res.json(result);
+        const usersData = result[0][0];
+        res.json(usersData);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -13,7 +14,8 @@ const getUser = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await db.query("SELECT id, name, email, password FROM user WHERE id = ?", [id]);
-        res.json(result);
+        const userData = result[0][0];
+        res.json(userData);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -46,7 +48,8 @@ const updateUser = async (req, res) => {
 
         const user = { name, email, password };
         const result = await db.query("UPDATE user SET ? WHERE id = ?", [user, id]);
-        res.json(result);
+        const userData = result[0][0];
+        res.json(userData);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -56,7 +59,8 @@ const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await db.query("DELETE FROM user WHERE id = ?", [id]);
-        res.json(result);
+        const userData = result[0][0];
+        res.json(userData);
     } catch (error) {
         res.status(500).send(error.message);
     }

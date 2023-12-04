@@ -8,17 +8,21 @@ const getContainers = async (req, res) => {
         }
 
         const result = await db.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE user_id = ?", [user_id]);
-        res.json(result);
+        const containers = result[0];;
+        res.json(containers);
     } catch (error) {
         res.status(500).send(error.message);
     }
 };
 
+
 const getContainer = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await db.query("SELECT id, name, type, temp, init_day, end_day, substratum FROM container WHERE id = ?", [id]);
-        res.json(result);
+        const containerData = result[0][0];
+        console.log(containerData)
+        res.json(containerData);
     } catch (error) {
         res.status(500).send(error.message);
     }
