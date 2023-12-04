@@ -22,6 +22,6 @@ app.use("/user", UserRouter);
 app.use("/container", ContainerRouter)
 app.use("/sensor", SensorRouter);
 
-app.listen(3000, ()=> {
-    signale.success("Server online in port 3000");
+app.listen(3006, ()=> {
+    signale.success("Server online in port 3006");
 })
